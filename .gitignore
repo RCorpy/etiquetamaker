@@ -25,3 +25,7 @@ yarn-error.log*
 #api_key
 
 api_key.js
+
+#env
+
+.env
