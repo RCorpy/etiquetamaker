@@ -1,23 +1,26 @@
-import logo from './logo.svg';
 import './App.css';
+import {useState, useEffect} from 'react'
+import Etiqueta from './Etiqueta.js'
 
 function App() {
+
+  const [orders, setOrders] =useState([])
+
+  useEffect(() => {
+    async function getJSON(){
+      const shopifyJSON = await fetch(`http://localhost:8081/`).then(res=>res.json())
+      setOrders(shopifyJSON.orders)
+      console.log("shopifyJSON", shopifyJSON)
+    }
+  getJSON()
+  }, [])
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      {orders.map(element=>(
+      <div className="dina4">
+        <Etiqueta order={element} />
+      </div>
+      ))}
     </div>
   );
 }
