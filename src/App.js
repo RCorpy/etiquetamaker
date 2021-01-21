@@ -5,13 +5,55 @@ import Etiqueta from './Etiqueta.js'
 function App() {
 
   const [orders, setOrders] =useState([])
+  const [orderIDs, setOrderIDs] = useState([])
 
+  useEffect(()=>{
+
+    const handleKeyDown = (event) => {
+      if(event.key==="p" || event.key==="P"){
+        console.log('WE GOT TO PRINT');
+      }
+      if(event.key==="t" || event.key==="T"){
+        console.log('WE GOT TO TEST');
+
+        fetch(`http://localhost:8081/testing`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            id: 3213280313544,
+            location_id: 58571161800,
+          })
+        })
+      }
+      if(event.key==="Enter"){
+        console.log('WE GOT TO ENTER');
+        fetch(`http://localhost:8081/fullfillorder`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            orderIDs: orderIDs
+          })
+        })
+      }
+      console.log("any other key")
+    };
+
+    document.addEventListener('keydown', handleKeyDown);
+
+    // Don't forget to clean up
+    return function cleanup() {
+      document.removeEventListener('keydown', handleKeyDown);
+    }
+  },[orders])
   useEffect(() => {
     async function getJSON(){
       const shopifyJSON = await fetch(`http://localhost:8081/`).then(res=>res.json())
       const orders = shopifyJSON.orders
       const ordersLenght = orders.length
-      console.log("orders", orders)
       if(ordersLenght<8){
         for(let i=0; i<8-ordersLenght; i++){
           orders.push({
@@ -29,11 +71,14 @@ function App() {
           })
         }
       }
+      setOrderIDs(orders.map(order=>(order.id)))
+      console.log("orders", orders)
       setOrders(shopifyJSON.orders)
-      console.log("shopifyJSON", shopifyJSON)
     }
   getJSON()
+
   }, [])
+
   return (
     <div className="dina4">
       {orders.map(element=>(

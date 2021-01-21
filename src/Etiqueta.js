@@ -10,6 +10,9 @@ export default function Etiqueta({order}) {
             <p>PROVINCIA: {order.billing_address.province}</p>
             <p>ZIP: {order.billing_address.zip}</p>
             <p>PAIS: {order.billing_address.country}</p>
+            <p>LOCATIONID: {order.location_id}</p>
+            <p>TRACKING NUMBER: {order.tracking_number}</p>
+            <p>LINE_ITEMS: {order.line_items[0].variant_id}</p>
         </div>
     )
 }
