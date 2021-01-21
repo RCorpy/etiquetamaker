@@ -5,27 +5,23 @@ import Etiqueta from './Etiqueta.js'
 function App() {
 
   const [orders, setOrders] =useState([])
-  const [orderIDs, setOrderIDs] = useState([])
+  const [orderIDs, setOrderIDs] = useState([{id:0, qty: 0}])
 
   useEffect(()=>{
 
     const handleKeyDown = (event) => {
       if(event.key==="p" || event.key==="P"){
         console.log('WE GOT TO PRINT');
+        const restorePage = document.body.innerHTML
+        const printContent = document.getElementById("printcontent").innerHTML
+
+        document.body.innerHTML=printContent
+        window.print()
+        document.body.innerHTML=restorePage
       }
       if(event.key==="t" || event.key==="T"){
-        console.log('WE GOT TO TEST');
-
-        fetch(`http://localhost:8081/testing`, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            id: 3213280313544,
-            location_id: 58571161800,
-          })
-        })
+        console.log('WE GOT TO TEST')
+        console.log(orderIDs)
       }
       if(event.key==="Enter"){
         console.log('WE GOT TO ENTER');
@@ -35,20 +31,18 @@ function App() {
             'Content-Type': 'application/json',
           },
           body: JSON.stringify({
-            orderIDs: orderIDs
+            ids: orderIDs
           })
         })
       }
-      console.log("any other key")
     };
 
     document.addEventListener('keydown', handleKeyDown);
 
-    // Don't forget to clean up
     return function cleanup() {
       document.removeEventListener('keydown', handleKeyDown);
     }
-  },[orders])
+  },[orders, orderIDs])
   useEffect(() => {
     async function getJSON(){
       const shopifyJSON = await fetch(`http://localhost:8081/`).then(res=>res.json())
@@ -71,7 +65,7 @@ function App() {
           })
         }
       }
-      setOrderIDs(orders.map(order=>(order.id)))
+      setOrderIDs(orders.map(order=>({id: order.id, qty: order.line_items[0].quantity})))
       console.log("orders", orders)
       setOrders(shopifyJSON.orders)
     }
@@ -80,11 +74,12 @@ function App() {
   }, [])
 
   return (
-    <div className="dina4">
-      {orders.map(element=>(
-        <Etiqueta order={element} />
-      ))}
-      
+    <div id="printcontent">
+      <div className="dina4">
+        {orders.map(element=>(
+          <Etiqueta order={element} />
+        ))}
+      </div>
     </div>
   );
 }
