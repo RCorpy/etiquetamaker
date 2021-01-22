@@ -11,17 +11,12 @@
   height: 32.2cm;
   padding: 0cm;
   margin: 1.9cm 0.65cm 1.3cm 0.65cm;
-  border: 1px #D3D3D3 solid;
-  border-radius: 5px;
-  background: white;
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
   
 }
 
 .etiquetacontainer{
   margin-bottom: 0.8cm;
-  border:1px solid black;
-  border-radius: 25px;
   position: relative;
   height: 7.45cm;
   width: 11.8cm;
