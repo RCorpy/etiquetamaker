@@ -1,56 +1,36 @@
 import './App.css';
 import {useState, useEffect} from 'react'
 import Etiqueta from './Etiqueta.js'
+import Menu from './Menu.js'
 
 function App() {
 
   const [orders, setOrders] =useState([])
   const [orderIDs, setOrderIDs] = useState([{id:0, qty: 0}])
 
-  useEffect(()=>{
 
-    const handleKeyDown = (event) => {
-      if(event.key==="p" || event.key==="P"){
-        console.log('WE GOT TO PRINT');
-        const restorePage = document.body.innerHTML
-        const printContent = document.getElementById("printcontent").innerHTML
+  const fulfillOrders= async ()=>{
+    await fetch(`http://localhost:8081/fullfillorder`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        ids: orderIDs
+      })
+    }).then(res=>res.json()).then(res=> console.log(res))
+  }
 
-        document.body.innerHTML=printContent
-        window.print()
-        document.body.innerHTML=restorePage
-      }
-      if(event.key==="t" || event.key==="T"){
-        console.log('WE GOT TO TEST')
-        console.log(orderIDs)
-      }
-      if(event.key==="Enter"){
-        console.log('WE GOT TO ENTER');
-        fetch(`http://localhost:8081/fullfillorder`, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            ids: orderIDs
-          })
-        })
-      }
-    };
 
-    document.addEventListener('keydown', handleKeyDown);
+  const getJSON = async function(){
+    console.log("getting JSON")
+    await fetch(`http://localhost:8081/`).then(res=>res.json()).then(shopify=>{
 
-    return function cleanup() {
-      document.removeEventListener('keydown', handleKeyDown);
-    }
-  },[orders, orderIDs])
-  useEffect(() => {
-    async function getJSON(){
-      const shopifyJSON = await fetch(`http://localhost:8081/`).then(res=>res.json())
-      const orders = shopifyJSON.orders
-      const ordersLenght = orders.length
-      if(ordersLenght<8){
-        for(let i=0; i<8-ordersLenght; i++){
-          orders.push({
+      const newOrders = shopify.orders
+      const newOrdersLenght = newOrders.length
+      if(newOrdersLenght<8){
+        for(let i=0; i<8-newOrdersLenght; i++){
+          newOrders.push({
             line_items:[{quantity:0}],
             billing_address:{
               address1:"",
@@ -65,22 +45,36 @@ function App() {
           })
         }
       }
-      setOrderIDs(orders.map(order=>({id: order.id, qty: order.line_items[0].quantity})))
-      console.log("orders", orders)
-      setOrders(shopifyJSON.orders)
-    }
-  getJSON()
+      if(orders[0].id!==newOrders[0].id){
+        setOrderIDs(orders.map(order=>({id: order.id, qty: order.line_items[0].quantity})))
+        console.log("orders", orders, newOrders)
+        setOrders(newOrders)
+      }
+      else{
+        alert("no changes on the orders yet")
+      }
 
+
+    })
+
+  }
+
+  useEffect(() => {
+    getJSON()
   }, [])
 
   return (
-    <div id="printcontent">
-      <div className="dina4">
-        {orders.map(element=>(
-          <Etiqueta order={element} />
-        ))}
+    <div className="fullapp">
+      <div id="printcontent">
+        <div className="dina4">
+          {orders.map(element=>(
+            <Etiqueta order={element} />
+          ))}
+        </div>
       </div>
+      <Menu fulfillOrders={fulfillOrders} getJSON={getJSON}/>
     </div>
+
   );
 }
 

@@ -18,12 +18,12 @@ app.get("/", async (req, res) => {
 
   const shopifyJSON = await fetch(`${api_key}breaster.myshopify.com/admin/api/2021-01/orders.json?status=any&fulfillment_status=unshipped&financial_status=paid&limit=8`).then(res=>res.json())
   //console.log(`${api_key}breaster.myshopify.com/admin/orders.json?status=any&fulfillment_status=unshipped&financial_status=pending`)
+  console.log("fetched data")
   res.send(shopifyJSON)
 });
 
 
 app.post("/fullfillorder", (req, res)=>{
-  console.log(req.body)
 
   for(let i=0; i<8; i++){
     if(req.body.ids[i].qty<1){continue}
@@ -37,7 +37,7 @@ app.post("/fullfillorder", (req, res)=>{
         location_id: location_id,
         tracking_number: null,
       }})
-    }).then(res=>res.json()).then(res=>console.log(res))
+    }).then(rs=>rs.json()).then(rs=>res.send({status:"good"}))
 
   }
 
