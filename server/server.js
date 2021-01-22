@@ -15,7 +15,7 @@ app.use(express.json({ limit: "50mb" }));
 app.use(cors());
 
 app.get("/", async (req, res) => {
-
+  console.log(`${api_key} , ${location_id}`)
   const shopifyJSON = await fetch(`${api_key}breaster.myshopify.com/admin/api/2021-01/orders.json?status=any&fulfillment_status=unshipped&financial_status=paid&limit=8`).then(res=>res.json())
   //console.log(`${api_key}breaster.myshopify.com/admin/orders.json?status=any&fulfillment_status=unshipped&financial_status=pending`)
   console.log("fetched data")

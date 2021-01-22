@@ -7,10 +7,10 @@
 .dina4{
   display:grid;
   grid-template-columns: repeat(2, 1fr);
-  width: 21cm;
-  min-height: 29.7cm;
+  width: 25cm;
+  height: 32.2cm;
   padding: 0cm;
-  margin: 0cm auto;
+  margin: 1.9cm 0.65cm 1.3cm 0.65cm;
   border: 1px #D3D3D3 solid;
   border-radius: 5px;
   background: white;
@@ -19,31 +19,33 @@
 }
 
 .etiquetacontainer{
-  margin: 1cm;
+  margin-bottom: 0.8cm;
   border:1px solid black;
   border-radius: 25px;
   position: relative;
-  padding: 0.2cm;
-  height: 4.5cm;
+  height: 7.45cm;
+  width: 11.8cm;
 }
 
 .cantidad{
-  border: 2px solid black;
+  
   position: absolute;
-  top: 10px;
-  right: 10px;
+  top: 0.5cm;
+  right: 0.5cm;
 }
 .remitente{
-  border: 2px solid black;
+  top:0.5cm;
+  left:0.5cm;
+  position: absolute;
   height: 1.7cm;
   width: 7cm;
   font-size: 0.35cm;
 } 
 .destinatario{
-  border: 2px solid black;
+  
   position: absolute;
   width: 95%;
-  bottom: 0px;
+  bottom: 0.2cm;
   text-align: center;
   margin-bottom: 0.2cm;
   font-size: 0.55cm;
