@@ -5,7 +5,7 @@ import Menu from './Menu.js'
 
 function App() {
 
-  const [orders, setOrders] =useState([{id:1}])
+  const [orders, setOrders] =useState([{id:1, line_items:[{}], billing_address:{}}])
   const [orderIDs, setOrderIDs] = useState([{id:0, qty: 0}])
 
 

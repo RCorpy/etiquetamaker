@@ -8,12 +8,16 @@ export default function Destinatario({order}) {
     const smallFont = {
         fontSize: "0.4cm"
     }
+    const verySmallFont = {
+        fontSize: "0.3cm"
+    }
+    console.log("length:",fullName.length)
     return (
         <div className="destinatario">
-            <div style={fullName.length>23 ? smallFont : {}}>{fullName}</div>
-            <div style={fullAddress.length>23 ? smallFont : {}}>{fullAddress}</div>
-            <div>{order.billing_address.zip} , {order.billing_address.city}</div>
-            <div>{order.billing_address.province}, {order.billing_address.country}</div>
+            <div style={fullName.length>23 ? fullName.length>40 ? verySmallFont : smallFont : {}}>{fullName}</div>
+            <div style={fullAddress.length>23 ? fullAddress.length>40 ? verySmallFont : smallFont : {}}>{fullAddress}</div>
+            <div style={(order.billing_address.zip.length+ order.billing_address.city.length)>23 ? (order.billing_address.zip.length+ order.billing_address.city.length)>40 ? verySmallFont : smallFont : {}}>{order.billing_address.zip} , {order.billing_address.city}</div>
+            <div style={(order.billing_address.province.length+ order.billing_address.country.length)>23 ? (order.billing_address.province.length+ order.billing_address.country.length)>40 ? verySmallFont : smallFont : {}}>{order.billing_address.province}, {order.billing_address.country}</div>
         </div>
     )
 }
