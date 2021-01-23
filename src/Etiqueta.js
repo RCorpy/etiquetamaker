@@ -4,10 +4,13 @@ import Destinatario from './Destinatario'
 
 
 export default function Etiqueta({order}) {
+
+    const isEmpty = order.line_items[0].quantity===0 ? {display: "none"} : {}
+
     return (
         <div className="etiquetacontainer">
-            <Remitente />
-            <div className="cantidad">{order.line_items[0].quantity}</div>
+            <Remitente conditionalStyle={isEmpty}/>
+            <div className="cantidad" style={isEmpty}>{order.line_items[0].quantity}</div>
             <Destinatario order={order} />
         </div>
     )
