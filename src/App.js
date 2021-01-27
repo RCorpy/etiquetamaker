@@ -43,12 +43,18 @@ function App() {
     await fetch(`http://localhost:8081/`).then(res=>res.json()).then(shopify=>{
 
       const newOrders = shopify.orders
-      if(orders[0].id!==newOrders[0].id || newOrders[0].id===0){
-        setOrderIDs(newOrders.map(order=>({id: order.id, qty: order.line_items[0].quantity})))
-        setOrders(newOrders)
+
+      if(newOrders.length){
+        if(orders[0].id!==newOrders[0].id || newOrders[0].id===0){
+          setOrderIDs(newOrders.map(order=>({id: order.id, qty: order.line_items[0].quantity})))
+          setOrders(newOrders)
+        }
+        else{
+          alert("no changes on the orders yet")
+        }
       }
       else{
-        alert("no changes on the orders yet")
+        alert("no more orders")
       }
     }).then(()=>arrangeShowOrders())
   }
